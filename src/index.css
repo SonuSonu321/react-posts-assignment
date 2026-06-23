@@ -119,13 +119,12 @@ body {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
-  padding: 24px 20px 20px;
   box-shadow: var(--shadow);
   transition: box-shadow var(--transition), transform var(--transition);
   text-align: left;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  overflow: hidden; /* so image corners respect border-radius */
 }
 
 .post-card:hover {
@@ -133,27 +132,30 @@ body {
   transform: translateY(-2px);
 }
 
+/* ✕ remove button */
 .post-card__remove-btn {
   position: absolute;
-  top: 12px;
-  right: 12px;
+  top: 10px;
+  right: 10px;
   background: none;
   border: none;
   cursor: pointer;
   color: var(--color-danger);
-  font-size: 1.5rem;
+  font-size: 1rem;
+  font-weight: 700;
   line-height: 1;
-  padding: 2px;
-  border-radius: 50%;
+  padding: 4px 6px;
+  border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color var(--transition), transform var(--transition);
+  transition: color var(--transition), background var(--transition);
+  z-index: 1;
 }
 
 .post-card__remove-btn:hover {
   color: var(--color-danger-hover);
-  transform: scale(1.15);
+  background: rgba(239, 68, 68, 0.08);
 }
 
 .post-card__remove-btn:focus-visible {
@@ -161,21 +163,33 @@ body {
   outline-offset: 2px;
 }
 
-.post-card__id {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--color-primary);
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+/* Text block */
+.post-card__content {
+  padding: 20px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
 }
 
 .post-card__title {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 0.975rem;
+  font-weight: 700;
   color: var(--color-text);
   line-height: 1.4;
-  /* keep space for remove button */
-  padding-right: 28px;
+  padding-right: 24px; /* avoid overlap with ✕ */
+  /* clamp to 2 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-transform: capitalize;
+}
+
+.post-card__body {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.55;
   /* clamp to 2 lines */
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -183,15 +197,19 @@ body {
   overflow: hidden;
 }
 
-.post-card__body {
-  font-size: 0.875rem;
-  color: var(--color-text-muted);
-  line-height: 1.6;
-  /* clamp to 3 lines */
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.post-card__date {
+  font-size: 0.78rem;
+  color: #9ca3af;
+  margin-top: 2px;
+}
+
+/* Thumbnail image at the bottom of the card */
+.post-card__image {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+  background: var(--color-border); /* fallback while loading */
 }
 
 /* ─── Pagination ────────────────────────────────────────────────────────── */
